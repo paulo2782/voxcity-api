@@ -9,15 +9,15 @@ const multerS3 = require('multer-s3');
 
 var s3 = new AWS.S3({
     apiVersion:       '2006-03-01',
-    region:           'sa-east-1',
-    accessKeyId:      'AKIA2N5VAMRJMRIEWOFD',
-    secretAccessKey:  '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'
+    region:           'us-east-2',
+    accessKeyId:      'AKIAVVQ6RYE5QGAW5EYE',
+    secretAccessKey:  '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'
   });
   
 var upload = multer({
     storage: multerS3({
         s3: s3,
-        bucket: 'voxcity',
+        bucket: 'voxcity-erp',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         metadata: function(req, file, cb) {
