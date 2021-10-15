@@ -16,6 +16,7 @@ app.use('/', router);
 
 
 const bodyParser = require('body-parser')
+
 const http = require('http').Server(app)
 
 // Inicializando Servidor

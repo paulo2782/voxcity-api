@@ -17,6 +17,7 @@
     "multer-s3": "^2.9.0",
     "nodemon": "^2.0.12",
     "formidable": "^1.2.2",
+    "mysql": "^2.18.1",
     "s3-streaming-upload": "^0.3.4"
   }
 }
