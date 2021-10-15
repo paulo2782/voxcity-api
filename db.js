@@ -3,7 +3,7 @@ var con = {
     user     : 'root',
     port     : '5306',
     password : '26031949Pa!@!@!',
-    database : 'voxbot',
+    database : 'inova',
     charset  : 'utf8mb4'
 };
 
