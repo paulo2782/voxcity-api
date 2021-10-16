@@ -43,7 +43,7 @@ const upload = multer({
             {
                 id: 'resized',
                 key: function (req, file, cb) {
-                    cb(null, Date.now().toString() + '-' + file.originalname+'.jpg');
+                    cb(null, Date.now().toString() + '-' + file.originalname);
                 },
                 transform: function (req, file, cb) {
                     cb(null, sharp().resize(640, 640).jpeg())
