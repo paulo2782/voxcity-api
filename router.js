@@ -63,7 +63,7 @@ const upload = multer({
                 },
                 transform: function (req, file, cb) {
                     console.log('og');
-                    cb(null, sharp().jpg())
+                    cb(null, sharp().jpeg())
                 },
             },
             {
@@ -73,7 +73,7 @@ const upload = multer({
                 },
                 transform: function (req, file, cb) {
                     console.log('thumbnail');
-                    cb(null, sharp().resize(300, 300).jpg())
+                    cb(null, sharp().resize(300, 300).jpeg())
                 },
             }
         ],
