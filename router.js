@@ -41,7 +41,7 @@ var s3 = new AWS.S3({
 var upload = multer({
     storage: multerS3({
       s3: s3,
-      bucket: 'voxcity-erp',
+      bucket: 'some-bucket',
       shouldTransform: function (req, file, cb) {
         cb(null, /^image/i.test(file.mimetype))
       },
@@ -51,8 +51,15 @@ var upload = multer({
           cb(null, 'image-original.jpg')
         },
         transform: function (req, file, cb) {
-          //Perform desired transformations
-          cb(null, sharp().resize(100,100).max())
+          cb(null, sharp().jpg())
+        }
+      }, {
+        id: 'thumbnail',
+        key: function (req, file, cb) {
+          cb(null, 'image-thumbnail.jpg')
+        },
+        transform: function (req, file, cb) {
+          cb(null, sharp().resize(100, 100).jpg())
         }
       }]
     })
