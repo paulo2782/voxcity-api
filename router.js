@@ -66,7 +66,7 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
     observacao     = req.body.observacao
     arquivo_foto   = req.file.originalname
     uploadLocation = req.file.location
-    console.log(uploadLocation)
+    console.log(req.file)
     var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
 
     con.query(SQL, (err, rows) => {
