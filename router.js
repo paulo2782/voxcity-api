@@ -1,6 +1,6 @@
 
 var AWS = require('aws-sdk');
-// const sharp = require('sharp');
+const sharp = require('sharp');
 
 var express = require('express');
 var router  = express.Router();
@@ -43,11 +43,20 @@ var upload = multer({
     storage: multerS3({
         s3: s3,
         bucket: 'voxcity-erp',
+        transforms: {
+            avatar: () => sharp().resize(200, 200)
+              .max()
+              .withoutEnlargement()
+              .jpeg({
+                progressive: true,
+                quality: 80
+              })
+        },
         metadata: function (req, file, cb) {
-        cb(null, {fieldName: file.fieldname});
+            cb(null, {fieldName: file.fieldname});
         },
         key: function (req, file, cb) {
-        cb(null, Date.now().toString())
+            cb(null, Date.now().toString())
         }
     })
 })
