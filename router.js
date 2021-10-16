@@ -26,6 +26,9 @@ var upload = multer({
         bucket: 'voxcity-erp',
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
+        shouldTransform: function (req, file, cb) {
+            cb(null, /^image/i.test(file.mimetype))
+        },
         metadata: function(req, file, cb) {
             cb(null, { fieldName: file.fieldname })
         },
@@ -33,6 +36,9 @@ var upload = multer({
             
             cb(null, Date.now().toString() + ' - ' + file.originalname)
             
+        },
+        transform: function (req, file, cb) {
+            cb(null, sharp().resize(100, 100).jpg())
         }
     })
 })
