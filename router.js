@@ -49,20 +49,12 @@ var upload = multer({
           cb(null, 'image-original.jpg')
         },
         transform: function (req, file, cb) {
-          cb(null, sharp().jpg())
-        }
-      }, {
-        id: 'thumbnail',
-        key: function (req, file, cb) {
-          cb(null, 'image-thumbnail.jpg')
-        },
-        transform: function (req, file, cb) {
-          cb(null, sharp().resize(100, 100).jpg())
+          //Perform desired transformations
+          cb(null, sharp().resize(100,100).max())
         }
       }]
     })
   })
-
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
