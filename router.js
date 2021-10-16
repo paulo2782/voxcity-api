@@ -1,4 +1,6 @@
+
 var AWS = require('aws-sdk');
+const sharp = require('sharp');
 
 var express = require('express');
 var router  = express.Router();
