@@ -7,8 +7,7 @@ var router  = express.Router();
 const app   = express();
 
 const multer   = require('multer');
-// const multerS3 = require('multer-s3-transform');
-var multerS3 = require('multer-s3-with-transforms')
+var multerS3 = require('multer-s3-transform')
 
 var mysql   = require('mysql');
 var db      = require('./db.js')
@@ -39,27 +38,53 @@ var s3 = new AWS.S3({
 //         }
 //     })
 // })
-var upload = multer({
+const fileFilter = (req, file, cb) => {
+    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
+        cb(null, true);
+    } else {
+        cb(new Error(message.FAIL.invalidImage), false);
+    }
+};
+
+const upload = multer({
+    fileFilter,
     storage: multerS3({
-        s3: s3,
+        s3,
         bucket: 'voxcity-erp',
-        transforms: {
-            avatar: () => sharp().resize(200, 200)
-              .max()
-              .withoutEnlargement()
-              .jpeg({
-                progressive: true,
-                quality: 80
-              })
+        acl: 'public-read',
+        shouldTransform: function (req, file, cb) {
+            cb(null, true);
         },
+        transforms: [
+            {
+                id: 'original',
+                key: function (req, file, cb) {
+                    cb(null, Date.now().toString());
+                },
+                transform: function (req, file, cb) {
+                    console.log('og');
+                    cb(null, sharp().jpg())
+                },
+            },
+            {
+                id: 'resized',
+                key: function (req, file, cb) {
+                    cb(null, Date.now().toString());
+                },
+                transform: function (req, file, cb) {
+                    console.log('thumbnail');
+                    cb(null, sharp().resize(300, 300).jpg())
+                },
+            }
+        ],
         metadata: function (req, file, cb) {
-            cb(null, Object.assign({}, req.body));
+            cb(null, {fieldName: 'some meta'});
         },
         key: function (req, file, cb) {
-            cb(null, Date.now().toString())
-        }
+            cb(null, Date.now().toString());
+        },
     })
-})
+});
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -67,7 +92,7 @@ router.use(function(req, res, next) {
     next();
 });
 
-router.post("/api/salva_nota", upload.array('arquivo_foto', 3), (req, res, next) => 
+router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
  {
 
     user_id        = req.body.user_id;
