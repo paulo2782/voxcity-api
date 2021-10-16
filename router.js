@@ -7,7 +7,8 @@ var router  = express.Router();
 const app   = express();
 
 const multer   = require('multer');
-const multerS3 = require('multer-s3-transform');
+// const multerS3 = require('multer-s3-transform');
+var multerS3 = require('multer-s3-with-transforms')
 
 var mysql   = require('mysql');
 var db      = require('./db.js')
@@ -42,28 +43,22 @@ var upload = multer({
     storage: multerS3({
       s3: s3,
       bucket: 'voxcity-erp',
-      shouldTransform: function (req, file, cb) {
-        cb(null, /^image/i.test(file.mimetype))
-      },
-      transforms: [{
-        id: 'original',
-        key: function (req, file, cb) {
-          cb(null, 'image-original.jpg')
-        },
-        transform: function (req, file, cb) {
-          cb(null, sharp().jpg())
-        }
-      }, {
-        id: 'thumbnail',
-        key: function (req, file, cb) {
-          cb(null, 'image-thumbnail.jpg')
-        },
-        transform: function (req, file, cb) {
-          cb(null, sharp().resize(100, 100).jpg())
-        }
-      }]
+      transforms: () => sharp().resize(200, 200)
+      .max()
+      .withoutEnlargement()
+      .jpeg({
+        progressive: true,
+        quality: 80
+      }),
+    metadata: function (req, file, cb) {
+        cb(null, { fieldName: file.fieldname })
+    },
+    key: function (req, file, cb) {
+        cb(null, Date.now().toString() + ' - ' + file.originalname)
+    }
     })
-  })
+})
+
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
