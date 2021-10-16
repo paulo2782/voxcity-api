@@ -65,7 +65,7 @@ router.use(function(req, res, next) {
     next();
 });
 
-router.post("/api/salva_nota", upload.single('arquivo_foto'), async(req, res) => 
+router.post("/api/salva_nota", upload.array('arquivo_foto', 3), (req, res, next) => 
  {
 
     user_id        = req.body.user_id;
