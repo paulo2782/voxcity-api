@@ -21,23 +21,7 @@ var s3 = new AWS.S3({
     secretAccessKey:  'mM2mKBMwm6aZEeWrfkobT5WOicRcWLou3ha0mEDn'
   });
   
-// var upload = multer({
-
-//     storage: multerS3({
-//         s3: s3,
-//         bucket: 'voxcity-erp',
-//         contentType: multerS3.AUTO_CONTENT_TYPE,
-//         acl: 'public-read',
-//         metadata: function(req, file, cb) {
-//             cb(null, { fieldName: file.fieldname })
-//         },
-//         key: function(req,file,cb) {
-            
-//             cb(null, Date.now().toString() + ' - ' + file.originalname)
-            
-//         }
-//     })
-// })
+ 
 const fileFilter = (req, file, cb) => {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png' || file.mimetype === 'image/jpg') {
         cb(null, true);
@@ -59,10 +43,9 @@ const upload = multer({
             {
                 id: 'original',
                 key: function (req, file, cb) {
-                    cb(null, Date.now().toString());
+                    cb(null, Date.now().toString() + ' - ' + file.originalname)
                 },
                 transform: function (req, file, cb) {
-                    console.log('og');
                     cb(null, sharp().jpeg())
                 },
             },
@@ -72,8 +55,7 @@ const upload = multer({
                     cb(null, Date.now().toString());
                 },
                 transform: function (req, file, cb) {
-                    console.log('thumbnail');
-                    cb(null, sharp().resize(300, 300).jpeg())
+                    cb(null, sharp().resize(100, 100).jpeg())
                 },
             }
         ],
