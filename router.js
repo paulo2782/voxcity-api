@@ -1,13 +1,13 @@
 
 var AWS = require('aws-sdk');
-const sharp = require('sharp');
 
 var express = require('express');
 var router  = express.Router();
 const app   = express();
 
 const multer   = require('multer');
-var multerS3 = require('multer-s3-transform')
+var multerS3   = require('multer-s3-transform')
+const sharp    = require('sharp');
 
 var mysql   = require('mysql');
 var db      = require('./db.js')
@@ -94,7 +94,7 @@ router.use(function(req, res, next) {
 
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
  {
-
+    console.log('aqui')
     user_id        = req.body.user_id;
     observacao     = req.body.observacao
     arquivo_foto   = req.file.originalname
