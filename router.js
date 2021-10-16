@@ -35,6 +35,7 @@ const upload = multer({
     storage: multerS3({
         s3,
         bucket: 'voxcity-erp',
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: 'public-read',
         shouldTransform: function (req, file, cb) {
             cb(null, true);
