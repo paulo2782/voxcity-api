@@ -43,7 +43,7 @@ const upload = multer({
             {
                 id: 'resized',
                 key: function (req, file, cb) {
-                    cb(null, Date.now().toString());
+                    cb(null, Date.now().toString() + '.jpg');
                 },
                 transform: function (req, file, cb) {
                     cb(null, sharp().resize(640, 640).jpeg())
@@ -62,7 +62,6 @@ router.use(function(req, res, next) {
 
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
  {
-    console.log('aqui')
     user_id        = req.body.user_id;
     observacao     = req.body.observacao
     arquivo_foto   = req.file.originalname
