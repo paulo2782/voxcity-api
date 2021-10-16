@@ -19,6 +19,7 @@
     "multer-s3-transform": "^2.10.3",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.12",
-    "s3-streaming-upload": "^0.3.4"
+    "s3-streaming-upload": "^0.3.4",
+    "sharp": "^0.29.1"
   }
 }
