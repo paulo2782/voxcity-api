@@ -43,10 +43,10 @@ const upload = multer({
             {
                 id: 'original',
                 key: function (req, file, cb) {
-                    // cb(null, Date.now().toString() + ' - ' + file.originalname)
+                    cb(null, Date.now().toString() + ' - ' + file.originalname)
                 },
                 transform: function (req, file, cb) {
-                    // cb(null, sharp().jpeg())
+                    cb(null, sharp().jpeg())
                 },
             },
             {
@@ -59,13 +59,7 @@ const upload = multer({
                 },
             }
         ],
-        contentType: multerS3.AUTO_CONTENT_TYPE,
-        metadata: function (req, file, cb) {
-            cb(null, {fieldName: 'some meta'});
-        },
-        key: function (req, file, cb) {
-            cb(null, Date.now().toString());
-        },
+        contentType: multerS3.AUTO_CONTENT_TYPE
     })
 });
 
