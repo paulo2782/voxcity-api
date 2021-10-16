@@ -19,29 +19,49 @@ var s3 = new AWS.S3({
     secretAccessKey:  'mM2mKBMwm6aZEeWrfkobT5WOicRcWLou3ha0mEDn'
   });
   
-var upload = multer({
+// var upload = multer({
 
+//     storage: multerS3({
+//         s3: s3,
+//         bucket: 'voxcity-erp',
+//         contentType: multerS3.AUTO_CONTENT_TYPE,
+//         acl: 'public-read',
+//         metadata: function(req, file, cb) {
+//             cb(null, { fieldName: file.fieldname })
+//         },
+//         key: function(req,file,cb) {
+            
+//             cb(null, Date.now().toString() + ' - ' + file.originalname)
+            
+//         }
+//     })
+// })
+var upload = multer({
     storage: multerS3({
-        s3: s3,
-        bucket: 'voxcity-erp',
-        contentType: multerS3.AUTO_CONTENT_TYPE,
-        acl: 'public-read',
-        shouldTransform: function (req, file, cb) {
-            cb(null, /^image/i.test(file.mimetype))
-        },
-        metadata: function(req, file, cb) {
-            cb(null, { fieldName: file.fieldname })
-        },
-        key: function(req,file,cb) {
-            
-            cb(null, Date.now().toString() + ' - ' + file.originalname)
-            
+      s3: s3,
+      bucket: 'some-bucket',
+      shouldTransform: function (req, file, cb) {
+        cb(null, /^image/i.test(file.mimetype))
+      },
+      transforms: [{
+        id: 'original',
+        key: function (req, file, cb) {
+          cb(null, 'image-original.jpg')
         },
         transform: function (req, file, cb) {
-            cb(null, sharp().resize(100, 100).jpg())
+          cb(null, sharp().jpg())
         }
+      }, {
+        id: 'thumbnail',
+        key: function (req, file, cb) {
+          cb(null, 'image-thumbnail.jpg')
+        },
+        transform: function (req, file, cb) {
+          cb(null, sharp().resize(100, 100).jpg())
+        }
+      }]
     })
-})
+  })
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
