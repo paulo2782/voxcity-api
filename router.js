@@ -1,4 +1,3 @@
-
 var AWS = require('aws-sdk');
 
 var express = require('express');
@@ -70,16 +69,21 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
     var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
 
     con.query(SQL, (err, rows) => {
-        if (err) throw err
-        res.json([{msg:'Arquivo enviado'}])    
+        if(err){
+            if(err.errno=1) {
+                res.json([{mensagem:'Erro'}])
+            }else{
+                res.json([{mensagem:err}])                
+            }
+        }else{
+            res.json([{msg:'Arquivo enviado'}])
+        }
+
     });
     
     
 });
 /////
-
-
-
 router.post("/api/mostra_notas", (req, res) => {
     var user_id = req.body.user_id
     var data    = req.body.data
