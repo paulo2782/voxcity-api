@@ -62,11 +62,8 @@ router.use(function(req, res, next) {
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
 {
    
-    // user_id        = req.body.user_id;
-    // observacao     = req.body.observacao;
-
-    user_id        = '3';
-    observacao     = '';
+    user_id        = req.body.user_id;
+    observacao     = req.body.observacao;
     arquivo_foto   = req.file.originalname
     uploadLocation = req.file.transforms[0].location
     
