@@ -60,21 +60,27 @@ router.use(function(req, res, next) {
 });
 
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
- {
-    // user_id        = req.body.user_id;
-    // observacao     = req.body.observacao
-    // arquivo_foto   = req.file.originalname
-    // uploadLocation = req.file.transforms[0].location
-    // console.log(req.file)
-    // var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
-
-    // con.query(SQL, (err, rows) => {
-    //     if (err) throw err
-    //     res.json([{msg:'Arquivo enviado'}])    
-    // });
-    res.json([{msg:'Arquivo enviado'}])    
+{
+    res.json([{uploadLocation:req.file.transforms[0].location}])    
     
 });
+
+router.post("/api/salva_nota_tabela", (req, res) => 
+{
+    user_id        = req.body.user_id;
+    observacao     = req.body.observacao
+    arquivo_foto   = req.file.originalname
+    uploadLocation = req.file.transforms[0].location
+    
+    var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
+
+    con.query(SQL, (err, rows) => {
+        if (err) throw err
+        res.json([{msg:'Arquivo enviado'}])    
+    });
+     
+});
+
 /////
 
 
