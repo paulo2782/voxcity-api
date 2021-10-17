@@ -61,29 +61,23 @@ router.use(function(req, res, next) {
 
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
  {
-    user_id        = req.body.user_id;
-    observacao     = req.body.observacao
-    arquivo_foto   = req.file.originalname
-    uploadLocation = req.file.transforms[0].location
-    console.log(req.file)
-    var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
+    // user_id        = req.body.user_id;
+    // observacao     = req.body.observacao
+    // arquivo_foto   = req.file.originalname
+    // uploadLocation = req.file.transforms[0].location
+    // console.log(req.file)
+    // var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
 
-    con.query(SQL, (err, rows) => {
-        if(err){
-            if(err.errno=1) {
-                res.json([{mensagem:'Erro'}])
-            }else{
-                res.json([{mensagem:err}])                
-            }
-        }else{
-            res.json([{msg:'Arquivo enviado'}])
-        }
-
-    });
-    
+    // con.query(SQL, (err, rows) => {
+    //     if (err) throw err
+    //     res.json([{msg:'Arquivo enviado'}])    
+    // });
+    res.json([{msg:'Arquivo enviado'}])    
     
 });
 /////
+
+
 router.post("/api/mostra_notas", (req, res) => {
     var user_id = req.body.user_id
     var data    = req.body.data
