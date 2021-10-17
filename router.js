@@ -61,7 +61,8 @@ router.use(function(req, res, next) {
 
 router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) => 
 {
-    res.json([{uploadLocation:req.file.transforms[0].location}])    
+    uploadLocation=req.file.transforms[0].location
+    res.send([{uploadLocation:uploadLocation}])    
     
 });
 
