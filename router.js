@@ -68,9 +68,10 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
 router.post("/api/salva_nota_tabela", (req, res) => 
 {
     user_id        = req.body.user_id;
-    observacao     = req.body.observacao
+    observacao     = req.body.observacao;
     // arquivo_foto   = req.file.originalname
-    uploadLocation = req.file.transforms[0].location
+    // uploadLocation = req.file.transforms[0].location
+    uploadLocation = req.body.uploadLocation;
     
     var SQL = "INSERT INTO upload (user_id,observacao,link) value('"+user_id+"','"+observacao+"','"+uploadLocation+"')"
 
