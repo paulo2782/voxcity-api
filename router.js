@@ -69,10 +69,10 @@ router.post("/api/salva_nota_tabela", (req, res) =>
 {
     user_id        = req.body.user_id;
     observacao     = req.body.observacao
-    arquivo_foto   = req.file.originalname
+    // arquivo_foto   = req.file.originalname
     uploadLocation = req.file.transforms[0].location
     
-    var SQL = "INSERT INTO upload (user_id,observacao,arquivo,link) value('"+user_id+"','"+observacao+"','"+arquivo_foto+"','"+uploadLocation+"')"
+    var SQL = "INSERT INTO upload (user_id,observacao,link) value('"+user_id+"','"+observacao+"','"+uploadLocation+"')"
 
     con.query(SQL, (err, rows) => {
         if (err) throw err
