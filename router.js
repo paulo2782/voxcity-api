@@ -64,12 +64,14 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
    
     user_id        = req.body.user_id;
     observacao     = req.body.observacao;
-    despesa_id     = req.body.despesa_id
-    arquivo_foto   = req.file.originalname
-    uploadLocation = req.file.transforms[0].location
+    despesa_id     = req.body.despesa_id;
+    valor          = req.body.valor;
+    arquivo_foto   = req.file.originalname;
+    uploadLocation = req.file.transforms[0].location;
+    status         = 0;
     
+    var SQL = "INSERT INTO upload (user_id,observacao,despesa_id,valor,arquivo,link,status) value('"+user_id+"','"+observacao+"','"+despesa_id+"','"+valor+"','"+arquivo_foto+"','"+uploadLocation+"','"+status+"')"
     
-    var SQL = "INSERT INTO upload (user_id,observacao,despesa_id,arquivo,link) value('"+user_id+"','"+observacao+"','"+despesa_id+"','"+arquivo_foto+"','"+uploadLocation+"')"
 
     con.query(SQL, (err, rows) => {
         if (err) throw err
