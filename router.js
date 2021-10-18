@@ -64,13 +64,13 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
    
     user_id        = req.body.user_id;
     observacao     = req.body.observacao;
-    despesa_id     = req.body.despesa_id;
+    despesa        = req.body.despesa;
     valor          = req.body.valor;
     arquivo_foto   = req.file.originalname;
     uploadLocation = req.file.transforms[0].location;
     status         = 0;
     
-    var SQL = "INSERT INTO upload (user_id,observacao,despesa_id,valor,arquivo,link,status) value('"+user_id+"','"+observacao+"','"+despesa_id+"','"+valor+"','"+arquivo_foto+"','"+uploadLocation+"','"+status+"')"
+    var SQL = "INSERT INTO upload (user_id,observacao,despesa,valor,arquivo,link,status) value('"+user_id+"','"+observacao+"','"+despesa+"','"+valor+"','"+arquivo_foto+"','"+uploadLocation+"','"+status+"')"
     
 
     con.query(SQL, (err, rows) => {
@@ -82,6 +82,15 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
 
 /////
 
+router.get("/api/mostra_notas_erp", (req, res) => {
+    var SQL = "select * from upload"
+    con.query(SQL, (err, rows) => {
+        if (err) throw err
+        
+        res.json({dados:rows})    
+    });
+
+});
 
 router.post("/api/mostra_notas", (req, res) => {
     var user_id = req.body.user_id

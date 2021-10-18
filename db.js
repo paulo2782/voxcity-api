@@ -8,10 +8,10 @@
 // };
 
 var con = {
-    host     : '177.137.117.196',
+    host     : 'localhost',
     user     : 'root',
     port     : '5306',
-    password : '26031949Pa!@!@!',
+    password : '26031949Pa!',
     database : 'inova',
     charset  : 'utf8mb4'
 };
