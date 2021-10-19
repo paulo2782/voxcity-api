@@ -83,14 +83,67 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
 /////
 
 router.get("/api/mostra_notas_erp", (req, res) => {
-    var SQL = "select * from upload"
+    var data_inicio = req.query.data_inicio
+    var data_fim    = req.query.data_fim
+    var user_id     = req.query.user_id
+    var status      = req.query.status
+
+    if( user_id == 0 && status == 99){
+         var SQL = "select users.name as nome_colaborador,upload.* from upload INNER JOIN users ON upload.user_id = users.id where upload.created between '"+data_inicio+" 00:00:00' and '"+data_fim+" 23:59:59'"
+    }
+    if( user_id != 0 && status == 99){
+         var SQL = "select users.name as nome_colaborador,upload.* from upload INNER JOIN users ON upload.user_id = users.id where upload.created between '"+data_inicio+" 00:00:00' and '"+data_fim+" 23:59:59' and user_id = '"+user_id+"'"
+    }
+    if( user_id == 0 && status != 99){
+         var SQL = "select users.name as nome_colaborador,upload.* from upload INNER JOIN users ON upload.user_id = users.id where upload.created between '"+data_inicio+" 00:00:00' and '"+data_fim+" 23:59:59' and status = '"+status+"' "        
+    }
+    if( user_id != 0 && status != 99){
+        var SQL = "select users.name as nome_colaborador,upload.* from upload INNER JOIN users ON upload.user_id = users.id where upload.created between '"+data_inicio+" 00:00:00' and '"+data_fim+" 23:59:59' and user_id = '"+user_id+"' and status = '"+status+"' "        
+     }
+
+    con.query(SQL, (err, rows) => {
+        if (err) throw err
+        res.json({dados:rows})    
+    });
+});
+
+
+router.get("/api/situacao_nota_erp", (req, res) => {
+    var nota_id = req.query.nota_id
+    var SQL = "select * from upload where id = '"+nota_id+"' "        
+    
     con.query(SQL, (err, rows) => {
         if (err) throw err
         
         res.json({dados:rows})    
     });
 
-});
+})
+
+router.post("/api/novo_status_nota", (req, res) => {
+    var nota_id = req.body.nota_id
+    var status  = req.body.status
+console.log(status)
+    
+    if(status == '1'){
+        var SQL = "UPDATE upload SET status = 1 WHERE id = "+nota_id+""
+        con.query(SQL, (err, rows) => {
+            if (err) throw err
+            res.json({msg:'status da nota alterado'})    
+        });
+
+    }
+    if(status == '0'){
+        var SQL = "UPDATE upload SET status = 0 WHERE id = "+nota_id+""
+        con.query(SQL, (err, rows) => {
+        if (err) throw err
+        res.json({msg:'status da nota alterado'})    
+    });
+
+    }
+
+
+})
 
 router.post("/api/mostra_notas", (req, res) => {
     var user_id = req.body.user_id
