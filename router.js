@@ -128,8 +128,7 @@ router.get("/api/situacao_nota_erp", (req, res) => {
 router.post("/api/novo_status_nota", (req, res) => {
     var nota_id = req.body.nota_id
     var status  = req.body.status
-console.log(status)
-    
+     
     if(status == '1'){
         var SQL = "UPDATE upload SET status = 1 WHERE id = "+nota_id+""
         con.query(SQL, (err, rows) => {
