@@ -82,6 +82,11 @@ router.post("/api/salva_nota", upload.single('arquivo_foto'), (req, res) =>
 
 /////
 
+
+router.get("/", (req, res) => {
+    res.json({msg:'top'});
+})
+
 router.get("/api/mostra_notas_erp", (req, res) => {
     var data_inicio = req.query.data_inicio
     var data_fim    = req.query.data_fim
