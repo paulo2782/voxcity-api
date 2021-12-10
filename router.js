@@ -45,9 +45,10 @@ const upload = multer({
                     cb(null, Date.now().toString() + '-' + file.originalname);
                 },
                 transform: function (req, file, cb) {
-                    cb(null, sharp().resize(840, 840, 
+                    cb(null, 
+                        sharp().resize(840, 840, 
                         {fit: sharp.fit.inside,
-                        withoutEnlargement: true}).jpeg())
+                        withoutEnlargement: true}).jpeg().withMetadata())
                 },
             }
         ],
